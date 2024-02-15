@@ -1,45 +1,49 @@
-import { useEffect, useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import { createPlayer } from "./api";
+import { useState, useEffect } from "react";
 import "./App.css";
+import { getPlayers, getPlayer } from "./api";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [players, setPlayers] = useState([]);
+  const [player, setPlayer] = useState({});
 
-useEffect(() => {
-  createPlayer(
-    {
-      name: 'Rufus',
-      breed: 'Irish Setter',
-    }
-  ).then(newPlayer => {
-    console.log(newPlayer);
-  })
-}, []);
+  useEffect(() => {
+    getPlayers().then(setPlayers);
+  }, []);
+
+  function handlePlayerClick(playerId) {
+    getPlayer(playerId).then(setPlayer);
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h1>Puppy bowl</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Breed</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {players.map((player) => {
+            return (
+              <tr key={player.id}>
+                <td>{player.name}</td>
+                <td>{player.breed}</td>
+                <td>{player.status}</td>
+                <td>
+                  <button onClick={() => handlePlayerClick(player.id)}>
+                    View player
+                    </button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      <dialog open={player.id}>{player.name}</dialog>
     </>
   );
 }
