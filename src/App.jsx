@@ -51,7 +51,7 @@ function App() {
         <input type="text" name="breed" />
         {/* <label htmlFor="status">Status</label>
         <input type="text" name="status" /> */}
-        <button type="submit">Add Plater</button>
+        <button type="submit">Add Player</button>
       </form>
       <label htmlFor="filter">Filter: </label>
       <input type="text" name="filter" value={filter} onChange={handleFilter}/>
